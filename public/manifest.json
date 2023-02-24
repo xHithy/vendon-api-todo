@@ -1,0 +1,8 @@
+{
+  "short_name": "Todo API",
+  "name": "Todo App using public API",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
