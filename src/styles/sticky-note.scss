@@ -1,0 +1,13 @@
+@import 'variables';
+
+.sticky-note {
+  font-family:$task-sticker-font;
+  width:300px;
+  height:300px;
+}
+
+.sticky-color-1 { background-color:#ff7eb9 }
+.sticky-color-2 { background-color:#ff65a3 }
+.sticky-color-3 { background-color:#7afcff }
+.sticky-color-4 { background-color:#feff9c }
+.sticky-color-5 { background-color:#fff740 }
