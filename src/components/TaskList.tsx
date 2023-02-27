@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import SingleTask from './SingleTask';
 import { TaskModel } from '../models/TaskModel';
 
@@ -20,6 +20,7 @@ const TaskList = ({
             </div>
         )
     }
+
     if (loading) {
         return (
             <div className='task-list flex wrap gap-10 jc-c ai-c'>
@@ -27,6 +28,7 @@ const TaskList = ({
             </div>
         )
     }
+
     return (
         <div className='task-list flex wrap gap-10'>
             {

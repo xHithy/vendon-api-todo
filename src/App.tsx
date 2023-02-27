@@ -7,21 +7,31 @@ import { TaskModel } from './models/TaskModel';
 import { UserModel } from './models/UserModel';
 
 const App = () => {
-    const [pageResults, setPageResults] = useState<number | string>(0);
-    const [userID, setUserID] = useState<number | string>(0);
+    const [resultCount, setResultCount] = useState<number>(0);
+    const [userID, setUserID] = useState<number>(0);
     const [tasks, setTasks] = useState<TaskModel[]>([]);
     const [users, setUsers] = useState<UserModel[]>([]);
 
     const fetchAllTasks = () => fetch('https://jsonplaceholder.typicode.com/todos').then(res => res.json());
     const fetchAllUsers = () => fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json());
 
-    const { isLoading, error, data } = useQuery('tasks', fetchAllTasks, {
+    const { isLoading, error, refetch } = useQuery('tasks', fetchAllTasks, {
         onSuccess: (data) => {
-            setTasks(data);
+            if (userID) {
+                let userTasks: TaskModel[] = [];
+                data.forEach((task:TaskModel) => {
+                    if (task.userId === userID) {
+                        userTasks.push(task);
+                    }
+                });
+                setTasks(userTasks);
+            } else {
+                setTasks(data);
+            }
         }
     });
 
-    const fetchUsers = useQuery('users', fetchAllUsers, {
+    useQuery('users', fetchAllUsers, {
         onSuccess: (data) => {
             setUsers(data);
         }
@@ -31,12 +41,13 @@ const App = () => {
     return (
         <div className='main-container flex col p-main gap-10'>
             <ActionBar
-                pageResults={pageResults}
-                setPageResults={setPageResults}
+                resultCount={resultCount}
+                setResultCount={setResultCount}
                 userID={userID}
                 setUserID={setUserID}
                 users={users}
                 tasks={tasks}
+                refetch={refetch}
             />
             <TaskList
                 tasks={tasks}
