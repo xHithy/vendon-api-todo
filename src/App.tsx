@@ -7,6 +7,7 @@ import { TaskModel } from './models/TaskModel';
 import { UserModel } from './models/UserModel';
 
 const App = () => {
+    const [totalResults, setTotalResults] = useState<number>(0);
     const [resultCount, setResultCount] = useState<number>(0);
     const [userID, setUserID] = useState<number>(0);
     const [tasks, setTasks] = useState<TaskModel[]>([]);
@@ -25,8 +26,10 @@ const App = () => {
                     }
                 });
                 setTasks(userTasks);
+                setTotalResults(userTasks.length);
             } else {
                 setTasks(data);
+                setTotalResults(data.length);
             }
         }
     });
@@ -47,6 +50,7 @@ const App = () => {
                 setUserID={setUserID}
                 users={users}
                 tasks={tasks}
+                totalResults={totalResults}
                 refetch={refetch}
             />
             <TaskList

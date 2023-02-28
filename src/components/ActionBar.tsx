@@ -11,6 +11,7 @@ interface Props {
     tasks: TaskModel[];
     users: UserModel[];
     refetch: any;
+    totalResults: number;
 }
 
 const ActionBar = ({
@@ -20,7 +21,8 @@ const ActionBar = ({
     setUserID,
     tasks,
     users,
-    refetch
+    refetch,
+    totalResults
 }: Props) => {
     const handleUserFilter = (id:number) => {
         setUserID(id);
@@ -41,7 +43,7 @@ const ActionBar = ({
                     3
                     4
                 </div>
-                Total results: {tasks.length}
+                Total results: {totalResults}
             </div>
             <div className='actions flex gap-20'>
                 <label className='flex col'>
