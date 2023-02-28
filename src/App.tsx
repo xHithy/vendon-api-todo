@@ -1,12 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import './styles/main.scss';
 import TaskList from './components/TaskList';
 import ActionBar from './components/ActionBar';
 import { useQuery } from 'react-query';
 import { TaskModel } from './models/TaskModel';
 import { UserModel } from './models/UserModel';
+import { fetchPageCount } from './functions/fetchPageCount';
 
 const App = () => {
+    const [selectedPage, setSelectedPage] = useState<number>(0);
+    const [totalPageCount, setTotalPageCount] = useState<number>(0);
     const [totalResults, setTotalResults] = useState<number>(0);
     const [resultCount, setResultCount] = useState<number>(0);
     const [userID, setUserID] = useState<number>(0);
@@ -31,6 +34,7 @@ const App = () => {
                 setTasks(data);
                 setTotalResults(data.length);
             }
+            setTotalPageCount(fetchPageCount(totalResults, resultCount));
         }
     });
 
@@ -40,7 +44,6 @@ const App = () => {
         }
     });
 
-
     return (
         <div className='main-container flex col p-main gap-10'>
             <ActionBar
@@ -49,9 +52,11 @@ const App = () => {
                 userID={userID}
                 setUserID={setUserID}
                 users={users}
-                tasks={tasks}
                 totalResults={totalResults}
                 refetch={refetch}
+                totalPageCount={totalPageCount}
+                selectedPage={selectedPage}
+                setSelectedPage={setSelectedPage}
             />
             <TaskList
                 tasks={tasks}
