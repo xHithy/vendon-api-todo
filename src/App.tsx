@@ -6,6 +6,7 @@ import { useQuery } from 'react-query';
 import { TaskModel } from './models/TaskModel';
 import { UserModel } from './models/UserModel';
 import { fetchPageCount } from './functions/fetchPageCount';
+import { paginateArray } from './functions/paginateArray';
 
 const App = () => {
     const [selectedPage, setSelectedPage] = useState<number>(0);
@@ -24,24 +25,18 @@ const App = () => {
             if (userID) {
                 let userTasks: TaskModel[] = [];
                 data.forEach((task:TaskModel) => {
-                    if (task.userId === userID) {
-                        userTasks.push(task);
-                    }
+                    if (task.userId === userID) userTasks.push(task);
                 });
-                setTasks(userTasks);
-                setTotalResults(userTasks.length);
-            } else {
-                setTasks(data);
-                setTotalResults(data.length);
+                data = userTasks;
             }
+            resultCount ? setTasks(paginateArray(selectedPage, resultCount, data)) : setTasks(data);
+            setTotalResults(data.length);
             setTotalPageCount(fetchPageCount(totalResults, resultCount));
         }
     });
 
     useQuery('users', fetchAllUsers, {
-        onSuccess: (data) => {
-            setUsers(data);
-        }
+        onSuccess: (data) => {setUsers(data)}
     });
 
     return (

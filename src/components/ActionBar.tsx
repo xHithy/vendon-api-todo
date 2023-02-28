@@ -29,7 +29,6 @@ const ActionBar = ({
     // Function that handles filtered user
     const handleUserFilter = (id:number) => {
         setUserID(id);
-        // Reset both results per page and the selected page
         setSelectedPage(1);
         setResultCount(0);
         refetch();
@@ -38,7 +37,6 @@ const ActionBar = ({
     // Function that handles change of results per page
     const handleResultFilter = (resultCount:number) => {
         setResultCount(resultCount);
-        // Reset selected page only
         setSelectedPage(1);
         refetch();
     }
@@ -51,28 +49,24 @@ const ActionBar = ({
 
     let pages = [];
     for (let i = 1; i <= totalPageCount; i++) {
-        if(selectedPage === i) {
-            pages.push(<button className='page-button active' onClick={(e) => handlePageChange(i)}>{i}</button>);
-        } else {
-            pages.push(<button className='page-button' onClick={(e) => handlePageChange(i)}>{i}</button>);
-        }
+        selectedPage === i
+        ? pages.push(<button key={i} className='page-button active' onClick={(e) => handlePageChange(i)}>{ i }</button>)
+        : pages.push(<button key={i} className='page-button' onClick={(e) => handlePageChange(i)}>{ i }</button>)
     }
 
     return (
-        <div className='action-bar p-10 flex gap-10 jc-sb ai-c'>
+        <div className='action-bar p-10 flex wrap gap-10 jc-sb ai-c'>
             <div className='paginator flex gap-20 ai-c'>
                 <div className='flex gap-10'>
-                    {pages.map((page) => (
-                        page
-                    ))}
+                    { pages.map(page => page) }
                 </div>
-                Total results: {totalResults}
+                Total results: { totalResults }
             </div>
             <div className='actions flex gap-20'>
                 <label className='flex col'>
                     <b>Results per page</b>
                     <select value={resultCount} onChange={(e) => handleResultFilter(parseInt(e.target.value))}>
-                        <option defaultValue='0'>All results</option>
+                        <option value='0'>All results</option>
                         <option value='10'>10</option>
                         <option value='25'>25</option>
                         <option value='50'>50</option>
