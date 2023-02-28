@@ -1,17 +1,17 @@
 import React from 'react';
-import { TaskModel } from '../models/TaskModel';
 import { UserModel } from '../models/UserModel';
-import {RefetchOptions, RefetchQueryFilters} from "react-query";
 
 interface Props {
     resultCount: number;
     setResultCount: React.Dispatch<React.SetStateAction<number>>;
     userID: number;
     setUserID: React.Dispatch<React.SetStateAction<number>>;
-    tasks: TaskModel[];
     users: UserModel[];
     refetch: any;
     totalResults: number;
+    totalPageCount: number;
+    selectedPage: number;
+    setSelectedPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ActionBar = ({
@@ -19,29 +19,52 @@ const ActionBar = ({
     setResultCount,
     userID,
     setUserID,
-    tasks,
     users,
     refetch,
-    totalResults
+    totalResults,
+    totalPageCount,
+    selectedPage,
+    setSelectedPage
 }: Props) => {
+    // Function that handles filtered user
     const handleUserFilter = (id:number) => {
         setUserID(id);
+        // Reset both results per page and the selected page
+        setSelectedPage(1);
+        setResultCount(0);
         refetch();
     }
 
+    // Function that handles change of results per page
     const handleResultFilter = (resultCount:number) => {
         setResultCount(resultCount);
+        // Reset selected page only
+        setSelectedPage(1);
         refetch();
+    }
+
+    // Function that handles change of page number
+    const handlePageChange = (pageNumber:number) => {
+        setSelectedPage(pageNumber);
+        refetch();
+    }
+
+    let pages = [];
+    for (let i = 1; i <= totalPageCount; i++) {
+        if(selectedPage === i) {
+            pages.push(<button className='page-button active' onClick={(e) => handlePageChange(i)}>{i}</button>);
+        } else {
+            pages.push(<button className='page-button' onClick={(e) => handlePageChange(i)}>{i}</button>);
+        }
     }
 
     return (
         <div className='action-bar p-10 flex gap-10 jc-sb ai-c'>
             <div className='paginator flex gap-20 ai-c'>
                 <div className='flex gap-10'>
-                    1
-                    2
-                    3
-                    4
+                    {pages.map((page) => (
+                        page
+                    ))}
                 </div>
                 Total results: {totalResults}
             </div>

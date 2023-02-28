@@ -13,6 +13,20 @@ input, select {
   background-color:transparent;
 }
 
-.action-bar {
-  background-color:$bar-background-color;
+.action-bar { background-color:$bar-background-color }
+
+.page-button {
+  background-color:transparent;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:0;
+  width:30px;
+  height:30px;
+}
+
+.active {
+  background-color:$active-background-color;
+  font-weight:700;
 }
